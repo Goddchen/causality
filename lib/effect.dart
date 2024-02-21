@@ -1,5 +1,5 @@
 /// effect
 library;
 
-/// Remove once real code and tests are available
-void dummyForTest() {}
+export 'src/effect.dart';
+export 'src/either.dart';
