@@ -27,10 +27,48 @@ void main() {
       );
 
       group(
-        'runSync',
+        'map',
         () {
           test(
-            'runs synchronous and returns value',
+            'maps correctly',
+            () async {
+              final effect = Effect<void, bool, Object>.succeed(true);
+              final mappedEffect =
+                  effect.map<String, Object>((value) => value.toString());
+
+              final result = await mappedEffect.run();
+
+              result.match(
+                (success) => expect(success, equals('true')),
+                (error) => fail('Should not call onError'),
+              );
+            },
+          );
+        },
+      );
+
+      test(
+        'propagates error correctly',
+        () async {
+          final expectedException = Exception('Test');
+          final effect = Effect<void, bool, Object>.fail(expectedException);
+          final mappedEffect =
+              effect.map<String, Object>((value) => value.toString());
+
+          final result = await mappedEffect.run();
+
+          result.match(
+            (success) => fail('Should not call onSuccess'),
+            (error) => expect(error, equals(expectedException)),
+          );
+        },
+      );
+
+      group(
+        'run',
+        () {
+          test(
+            'runs and returns value',
             () async {
               final effect = Effect<void, bool, Object>.succeed(true);
 
