@@ -1,0 +1,12 @@
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  dart_package:
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v1
+    with:
+      dart_sdk: "3.3.0"
+      min_coverage: 0
+      runs_on: ubuntu-22.04
