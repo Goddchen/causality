@@ -18,6 +18,22 @@ class Either<Success, Error> extends Equatable {
         _error,
       ];
 
+  Either<NewSuccess, Error> flatMap<NewSuccess>(
+    Either<NewSuccess, Error> Function(Success value) mapper,
+  ) =>
+      match(
+        (success) => mapper(success),
+        Either.error,
+      );
+
+  Either<NewSuccess, Error> map<NewSuccess>(
+    NewSuccess Function(Success value) mapper,
+  ) =>
+      match(
+        (success) => Either.success(mapper(success)),
+        Either.error,
+      );
+
   Result match<Result>(
     Result Function(Success success) onSuccess,
     Result Function(Error error) onError,
