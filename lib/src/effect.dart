@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs
 
+import 'dart:async';
+
 import 'package:effect/src/either.dart';
 import 'package:equatable/equatable.dart';
 
@@ -17,13 +19,13 @@ class Effect<Requirements, Success, Error> extends Equatable {
   factory Effect.succeed(Success success) =>
       Effect._(() => Either.success(success));
   factory Effect.tryCatch(
-    Success Function(Context<Requirements?> context) tryCatch, [
+    FutureOr<Success> Function(Context<Requirements?> context) tryCatch, [
     Requirements? requirements,
   ]) =>
       Effect._(
-        () {
+        () async {
           try {
-            return Either.success(tryCatch(Context(requirements)));
+            return Either.success(await tryCatch(Context(requirements)));
           } catch (e) {
             return Either.error(e as Error);
           }
@@ -36,11 +38,11 @@ class Effect<Requirements, Success, Error> extends Equatable {
     this._requirements,
   ]);
 
-  final Either<Success, Error> Function() _effect;
+  final FutureOr<Either<Success, Error>> Function() _effect;
   final Requirements? _requirements;
 
   @override
   List<Object?> get props => [_requirements];
 
-  Either<Success, Error> runSync() => _effect();
+  Future<Either<Success, Error>> run() async => _effect();
 }

@@ -11,11 +11,11 @@ void main() {
         () {
           test(
             'returns error when run',
-            () {
+            () async {
               final expectedException = Exception('Test');
               final effect = Effect<void, bool, Object>.fail(expectedException);
 
-              final result = effect.runSync();
+              final result = await effect.run();
 
               expect(
                 result,
@@ -31,9 +31,11 @@ void main() {
         () {
           test(
             'runs synchronous and returns value',
-            () {
+            () async {
               final effect = Effect<void, bool, Object>.succeed(true);
-              final result = effect.runSync();
+
+              final result = await effect.run();
+
               expect(result, equals(const Either<bool, Object>.success(true)));
             },
           );
@@ -45,11 +47,11 @@ void main() {
         () {
           test(
             'returns value when run',
-            () {
+            () async {
               const expectedValue = true;
               final effect = Effect<void, bool, Object>.succeed(expectedValue);
 
-              final result = effect.runSync();
+              final result = await effect.run();
 
               expect(
                 result,
@@ -65,12 +67,13 @@ void main() {
         () {
           test(
             'returns value when successful',
-            () {
+            () async {
               const expectedValue = true;
-              final effect =
-                  Effect<void, bool, Object>.tryCatch((_) => expectedValue);
+              final effect = Effect<void, bool, Object>.tryCatch(
+                (_) => expectedValue,
+              );
 
-              final result = effect.runSync();
+              final result = await effect.run();
 
               expect(
                 result,
@@ -81,13 +84,13 @@ void main() {
 
           test(
             'returns error on throw',
-            () {
+            () async {
               final expectedException = Exception('Test');
               final effect = Effect<void, bool, Object>.tryCatch(
                 (_) => throw expectedException,
               );
 
-              final result = effect.runSync();
+              final result = await effect.run();
 
               expect(
                 result,
@@ -98,17 +101,17 @@ void main() {
 
           test(
             'preserves context when run',
-            () {
+            () async {
               const expectedRequirement = 'Test';
               String? foundRequirement;
 
-              Effect<String, bool, Object>.tryCatch(
+              await Effect<String, bool, Object>.tryCatch(
                 (context) {
                   foundRequirement = context.requirements;
                   return true;
                 },
                 expectedRequirement,
-              ).runSync();
+              ).run();
 
               expect(
                 foundRequirement,
