@@ -35,9 +35,8 @@ void main() {
               final effect = Effect<void, bool, Object>.succeed(true);
               final mappedEffect = effect.flatMap(
                 (value) => value.match(
-                  (success) =>
-                      Either<String, Object>.success(success.toString()),
-                  Either<String, Object>.error,
+                  (success) => Either.success(success.toString()),
+                  Either.error,
                 ),
               );
 
@@ -46,6 +45,27 @@ void main() {
               result.match(
                 (success) => expect(success, equals('true')),
                 (error) => fail('Should not call onError'),
+              );
+            },
+          );
+
+          test(
+            'propagates errors correctly',
+            () async {
+              final expectedException = Exception('Test');
+              final effect = Effect<void, bool, Object>.fail(expectedException);
+              final mappedEffect = effect.flatMap(
+                (value) => value.match(
+                  (success) => Either.success(success.toString()),
+                  Either.error,
+                ),
+              );
+
+              final result = await mappedEffect.run();
+
+              result.match(
+                (success) => fail('Should not call onSuccess'),
+                (error) => expect(error, equals(expectedException)),
               );
             },
           );

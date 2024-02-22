@@ -44,8 +44,8 @@ class Effect<Requirements, Success, Error> extends Equatable {
   @override
   List<Object?> get props => [_requirements];
 
-  Effect<Requirements, NewSuccess, NewError> flatMap<NewSuccess, NewError>(
-    Either<NewSuccess, NewError> Function(
+  Effect<Requirements, NewSuccess, Error> flatMap<NewSuccess>(
+    Either<NewSuccess, Error> Function(
       Either<Success, Error> value,
     ) mapper,
   ) =>
