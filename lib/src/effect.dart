@@ -53,5 +53,15 @@ class Effect<Requirements, Success, Error> extends Equatable {
         () async => mapper(await _effect()),
       );
 
+  Effect<Requirements, NewSuccess, Error> map<NewSuccess>(
+    NewSuccess Function(Success value) mapper,
+  ) =>
+      Effect._(
+        () async => (await _effect()).match(
+          (success) => Either.success(mapper(success)),
+          Either.error,
+        ),
+      );
+
   Future<Either<Success, Error>> run() async => _effect();
 }
