@@ -33,8 +33,7 @@ void main() {
             'maps correctly',
             () async {
               final effect = Effect<void, bool, Object>.succeed(true);
-              final mappedEffect =
-                  effect.map<String, Object>((value) => value.toString());
+              final mappedEffect = effect.map((value) => value.toString());
 
               final result = await mappedEffect.run();
 
@@ -52,8 +51,7 @@ void main() {
         () async {
           final expectedException = Exception('Test');
           final effect = Effect<void, bool, Object>.fail(expectedException);
-          final mappedEffect =
-              effect.map<String, Object>((value) => value.toString());
+          final mappedEffect = effect.map((value) => value.toString());
 
           final result = await mappedEffect.run();
 

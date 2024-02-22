@@ -44,13 +44,13 @@ class Effect<Requirements, Success, Error> extends Equatable {
   @override
   List<Object?> get props => [_requirements];
 
-  Effect<Requirements, NewSuccess, NewError> map<NewSuccess, NewError>(
+  Effect<Requirements, NewSuccess, Error> map<NewSuccess>(
     NewSuccess Function(Success value) mapper,
   ) =>
       Effect._(
         () async => (await _effect()).match(
           (success) => Either.success(mapper(success)),
-          (error) => Either<NewSuccess, NewError>.error(error as NewError),
+          Either.error,
         ),
       );
 
