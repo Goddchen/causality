@@ -1,4 +1,4 @@
-name: effect
+name: causality
 description: Dart port of the JavaScript effect framework
 version: 0.0.1
 repository: https://github.com/Goddchen/effect

@@ -2,7 +2,7 @@
 
 import 'dart:async';
 
-import 'package:effect/src/cause.dart';
+import 'package:causality/src/cause.dart';
 
 class Effect {
   Effect(this.effect);

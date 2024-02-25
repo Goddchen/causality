@@ -2,8 +2,8 @@
 
 import 'dart:async';
 
-import 'package:effect/effect.dart';
-import 'package:effect/src/cause.dart';
+import 'package:causality/src/cause.dart';
+import 'package:causality/src/effect.dart';
 import 'package:fimber/fimber.dart';
 
 CausalityUniverse causalityUniverse = CausalityUniverse.instance;
