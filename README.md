@@ -1,42 +1,26 @@
-# effect
+# causality and flutter_causality
 
-![main](https://github.com/Goddchen/effect/actions/workflows/main.yaml/badge.svg)
-![Pub Version](https://img.shields.io/pub/v/effect)
+![main](https://github.com/Goddchen/causality/actions/workflows/main.yaml/badge.svg)
+![Pub Version](https://img.shields.io/pub/v/causality)
+![Pub Version](https://img.shields.io/pub/v/flutter_causality)
 
 ## Motivation
 
-The `effect` NPM package is getting more and more popular (https://effect.website/).
-I love the concept and so I'm trying to bring it over to Dart.
+I wanted to have a system in place that works like you would describe stuff
+happening in the real world as well. Cause and effect came to my mind.
+
+`causality` contains the pure Dart package and `flutter_causality` contains
+the Flutter related extensions.
 
 ## Supported Features
 
-### Effect
+### causality
 
-- ✅ `flatMap(...)`
-- ✅ `map(...)`
-- ✅ `run()`
+- ✅ Emit causes
+- ✅ Effects observe causes
+- ✅ Effects can result in new causes to be emitted
 
-### Either
+### flutter_causality
 
-- ✅ `flatMap(...)`
-- ✅ `map(...)`
-- ✅ `match(...)`
-
-## Installation
-
-As simple as `dart pub add effect`.
-
-Or manually add `effect: ^<version>` to your `pubspec.yaml`.
-
-## Usage
-
-```dart
-Future<String> _longRunningApiCall() async => '{}';
-final result = await Effect<void, String, Object>.tryCatch(
-  (context) => _longRunningApiCall(),
-).map(jsonDecode).run();
-result.match(
-  (success) {},
-  (error) {},
-);
-```
+- ✅ Put a causality universe widget in the wigdet tree
+- ✅ Put an effect widget in the widget tree to observe causes
