@@ -1,0 +1,13 @@
+name: causality
+description: "Cause and effect in the Dart universe"
+version: 0.0.1
+repository: https://github.com/Goddchen/causality
+environment:
+  sdk: ^3.3.0
+
+dependencies:
+  equatable: ^2.0.5
+  fimber: ^0.7.0
+dev_dependencies:
+  test: ^1.24.0
+  very_good_analysis: ^5.1.0
