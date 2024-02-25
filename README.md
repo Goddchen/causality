@@ -1,8 +1,10 @@
 # causality and flutter_causality
 
 ![main](https://github.com/Goddchen/causality/actions/workflows/main.yaml/badge.svg)
-![Pub Version](https://img.shields.io/pub/v/causality)
-![Pub Version](https://img.shields.io/pub/v/flutter_causality)
+
+causality: ![Pub Version](https://img.shields.io/pub/v/causality)
+
+flutter_causality: ![Pub Version](https://img.shields.io/pub/v/flutter_causality)
 
 ## Motivation
 
