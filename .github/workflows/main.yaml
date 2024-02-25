@@ -7,12 +7,14 @@ jobs:
   causality_dart_package:
     runs-on: ubuntu-22.04
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/dart_package
         with:
           working_directory: packages/causality/
   flutter_causality_dart_package:
     runs-on: ubuntu-22.04
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/dart_package
         with:
           working_directory: packages/flutter_causality/
