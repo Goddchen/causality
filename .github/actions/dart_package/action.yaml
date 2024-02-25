@@ -12,4 +12,4 @@ runs:
         dart_sdk: "3.3.0"
         min_coverage: 0
         runs_on: ubuntu-22.04
-        working_directory: packages/causality/
+        working_directory: ${{ inputs.working_directory }}
