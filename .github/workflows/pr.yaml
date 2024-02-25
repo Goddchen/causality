@@ -2,11 +2,17 @@ on:
   pull_request:
 
 jobs:
-  dart_package:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v1
-    with:
-      dart_sdk: "3.3.0"
-      min_coverage: 0
-      runs_on: ubuntu-22.04
+  causality_dart_package:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: ./.github/actions/dart_package
+        with:
+          working_directory: packages/causality/
+  flutter_causality_dart_package:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: ./.github/actions/dart_package
+        with:
+          working_directory: packages/flutter_causality/
   semantic_pull_request:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1

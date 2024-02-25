@@ -1,21 +1,23 @@
-import 'package:causality/effect.dart';
+// ignore_for_file: public_member_api_docs
+
+import 'package:causality/causality.dart';
 import 'package:flutter/widgets.dart';
 
 class CausalityUniverseWidget extends InheritedWidget {
-  final CausalityUniverse causalityUniverse;
-
   const CausalityUniverseWidget({
-    super.key,
     required this.causalityUniverse,
     required super.child,
+    super.key,
   });
 
-  static CausalityUniverseWidget? maybeOf(BuildContext context) {
-    return context.getInheritedWidgetOfExactType<CausalityUniverseWidget>();
-  }
+  final CausalityUniverse causalityUniverse;
 
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) {
     return false;
+  }
+
+  static CausalityUniverseWidget? maybeOf(BuildContext context) {
+    return context.getInheritedWidgetOfExactType<CausalityUniverseWidget>();
   }
 }

@@ -1,4 +1,4 @@
-import 'package:causality/effect.dart';
+import 'package:causality/causality.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_causality/flutter_causality.dart';
 

@@ -6,11 +6,7 @@ import 'package:causality/src/cause.dart';
 import 'package:causality/src/effect.dart';
 import 'package:fimber/fimber.dart';
 
-CausalityUniverse causalityUniverse = CausalityUniverse.instance;
-
 class CausalityUniverse {
-  static CausalityUniverse instance = CausalityUniverse();
-
   Map<Type, List<Effect>> observations = {};
 
   List<Cause> history = [];
@@ -70,21 +66,21 @@ class CausalityUniverse {
 }
 
 extension CauseExtension on Cause {
-  void emit({CausalityUniverse? universe}) {
-    (universe ?? causalityUniverse).emit(this);
+  void emit({required CausalityUniverse universe}) {
+    universe.emit(this);
   }
 }
 
 extension EffectExtension on Effect {
-  void dispose({CausalityUniverse? universe}) {
-    (universe ?? causalityUniverse).disposeEffect(this);
+  void dispose({required CausalityUniverse universe}) {
+    universe.disposeEffect(this);
   }
 
   void observe(
     List<Type> types, {
-    CausalityUniverse? universe,
+    required CausalityUniverse universe,
   }) {
-    (universe ?? causalityUniverse).observe(
+    universe.observe(
       causeTypes: types,
       effect: this,
     );

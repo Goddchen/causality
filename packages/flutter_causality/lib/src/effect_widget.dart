@@ -1,14 +1,16 @@
+// ignore_for_file: public_member_api_docs
+
+import 'package:causality/causality.dart';
 import 'package:flutter/widgets.dart';
-import 'package:causality/effect.dart';
 import 'package:flutter_causality/flutter_causality.dart';
 
 typedef EffectBuilder = Widget Function(Cause? cause);
 
 class EffectWidget extends StatefulWidget {
   const EffectWidget({
-    super.key,
     required EffectBuilder builder,
     required List<Type> observedCauseTypes,
+    super.key,
   })  : _builder = builder,
         _observedCauseTypes = observedCauseTypes;
 
@@ -28,15 +30,22 @@ class _EffectWidgetState extends State<EffectWidget> {
     final universe = context
         .getInheritedWidgetOfExactType<CausalityUniverseWidget>()
         ?.causalityUniverse;
-    Effect((cause) {
-      setState(() {
-        _cause = cause;
-      });
-      return [];
-    }).observe(
-      widget._observedCauseTypes,
-      universe: universe,
+    assert(
+      universe != null,
+      'There has to be a CausalityUniverseWidget somewhere in the tree '
+      'above this widget!',
     );
+    if (universe != null) {
+      Effect((cause) {
+        setState(() {
+          _cause = cause;
+        });
+        return [];
+      }).observe(
+        widget._observedCauseTypes,
+        universe: universe,
+      );
+    }
   }
 
   @override

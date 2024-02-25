@@ -1,3 +1,5 @@
 {
-  "dart.flutterSdkPath": ".fvm\\versions\\3.19.0"
+    "yaml.schemas": {
+        "https://json.schemastore.org/github-action.json": "file:///c%3A/Users/goddc/git/causality/.github/actions/dart_package.yaml"
+    }
 }
