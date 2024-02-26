@@ -1,10 +1,12 @@
-// ignore_for_file: public_member_api_docs
-
+import 'package:clock/clock.dart';
 import 'package:equatable/equatable.dart';
 
+/// A cause can be observed by multiple effects and be the result of an effect.
 class Cause extends Equatable {
-  Cause() : timestamp = DateTime.now();
+  /// Creates a effect that has a timestamp of `clock.now()`.
+  Cause() : timestamp = clock.now();
 
+  /// The time at which the cause happened.
   final DateTime timestamp;
 
   @override

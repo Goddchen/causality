@@ -1,11 +1,12 @@
 name: causality
-description: "Cause and effect in the Dart universe"
+description: "Cause and effect in the Dart universe. A way to describe the relation between causes and effects."
 version: 0.0.1
-repository: https://github.com/Goddchen/causality
+repository: https://github.com/Goddchen/causality/tree/main/packages/causality
 environment:
   sdk: ^3.3.0
 
 dependencies:
+  clock: ^1.1.1
   equatable: ^2.0.5
   fimber: ^0.7.0
 dev_dependencies:
