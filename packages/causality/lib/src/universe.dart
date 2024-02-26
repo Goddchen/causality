@@ -22,6 +22,11 @@ class CausalityUniverse {
         Fimber.d('$this no longer observing ${entry.key}');
       }
     }
+    _cleanupObservations();
+  }
+
+  void _cleanupObservations() {
+    observations.removeWhere((_, value) => value.isEmpty);
   }
 
   /// Emits this cause and triggers all observing effects.
@@ -57,7 +62,6 @@ class CausalityUniverse {
   void observe({
     required List<Type> causeTypes,
     required Effect effect,
-    CausalityUniverse? universe,
   }) {
     Fimber.d('$effect observing $causeTypes');
     for (final type in causeTypes) {
