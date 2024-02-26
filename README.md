@@ -26,3 +26,39 @@ the Flutter related extensions.
 
 - ✅ Put a causality universe widget in the wigdet tree
 - ✅ Put an effect widget in the widget tree to observe causes
+
+## Explanation
+
+See some explanatory examples in the diagram below:
+
+- `Effect1` and `Effect2` both observe `Cause1`
+- `Effect1` emits 3 causes as its result
+- `Effect2` does not emit any resulting causes
+- `Effect2` observes `Cause4`, which is a cause emitted from `Effect1`
+
+```mermaid
+stateDiagram-v2
+direction LR
+
+classDef cause fill:lightgreen,color:black
+classDef effect fill:lightblue,color:black
+
+Cause1 --> Effect1
+
+Effect1 --> Cause2
+Effect1 --> Cause3
+Effect1 --> Cause4
+
+Cause1 --> Effect2
+
+Cause4 --> Effect2
+
+Effect2 --> [*]
+
+class Cause1 cause
+class Cause2 cause
+class Cause3 cause
+class Cause4 cause
+class Effect1 effect
+class Effect2 effect
+```
