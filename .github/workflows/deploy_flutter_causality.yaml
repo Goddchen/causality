@@ -2,10 +2,33 @@ on:
   push:
     tags: "flutter_causality/*"
 
+defaults:
+  run:
+    working-directory: packages/flutter_causality
+
 jobs:
   deploy:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_pub_publish.yml@v1
-    with:
-      flutter_version: "3.19.0"
-      working_directory: "packages/flutter_causality"
-      pub_credentials: secrets.PUB_CREDENTIALS
+    runs-on: ubuntu-22.04
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.19.0"
+          cache: true
+
+      - name: 📦 Install Dependencies
+        run: flutter pub get
+
+      - name: 🔐 Setup Pub Credentials
+        run: |
+          mkdir -p $XDG_CONFIG_HOME/dart
+          echo '${{secrets.PUB_CREDENTIALS}}' > "$XDG_CONFIG_HOME/dart/pub-credentials.json"
+
+      - name: 🌵 Dry Run
+        run: flutter pub publish --dry-run
+
+      - name: 📢 Publish
+        run: flutter pub publish -f

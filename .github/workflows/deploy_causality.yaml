@@ -2,10 +2,32 @@ on:
   push:
     tags: "causality/*"
 
+defaults:
+  run:
+    working-directory: packages/causality
+
 jobs:
   deploy:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_pub_publish.yml@v1
-    with:
-      dart_sdk: "3.3.0"
-      working_directory: "packages/causality"
-      pub_credentials: secrets.PUB_CREDENTIALS
+    runs-on: ubuntu-22.04
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v4
+
+      - name: 🎯 Setup Dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: "3.3.0"
+
+      - name: 📦 Install Dependencies
+        run: dart pub get
+
+      - name: 🔐 Setup Pub Credentials
+        run: |
+          mkdir -p $XDG_CONFIG_HOME/dart
+          echo '${{secrets.PUB_CREDENTIALS}}' > "$XDG_CONFIG_HOME/dart/pub-credentials.json"
+
+      - name: 🌵 Dry Run
+        run: dart pub publish --dry-run
+
+      - name: 📢 Publish
+        run: dart pub publish -f
