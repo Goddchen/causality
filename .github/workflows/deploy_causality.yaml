@@ -8,4 +8,4 @@ jobs:
     with:
       dart_sdk: "3.3.0"
       working_directory: "packages/causality"
-      pub_credentials: ${{ secrets.PUB_CREDENTIALS }}
+      pub_credentials: secrets.PUB_CREDENTIALS
