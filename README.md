@@ -40,8 +40,8 @@ See some explanatory examples in the diagram below:
 stateDiagram-v2
 direction LR
 
-classDef cause fill:green
-classDef effect fill:blue
+classDef cause fill:lightgreen,color:black
+classDef effect fill:lightblue,color:black
 
 Cause1 --> Effect1
 
