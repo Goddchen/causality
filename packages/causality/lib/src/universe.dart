@@ -1,18 +1,20 @@
-// ignore_for_file: public_member_api_docs
-
 import 'dart:async';
 
 import 'package:causality/src/cause.dart';
 import 'package:causality/src/effect.dart';
 import 'package:fimber/fimber.dart';
 
+/// A universe in which causes and effects are managed.
 class CausalityUniverse {
+  /// A list of all effects that are observing causes.
   Map<Type, List<Effect>> observations = {};
 
+  /// A history of all causes that were emitted in this universe.
   List<Cause> history = [];
 
   final List<Completer<void>> _completers = [];
 
+  /// Disposes an effect and removes all occurences from [observations].
   void disposeEffect(Effect effect) {
     Fimber.d('Disposing $this');
     for (final entry in observations.entries) {
@@ -22,6 +24,7 @@ class CausalityUniverse {
     }
   }
 
+  /// Emits this cause and triggers all observing effects.
   void emit(Cause cause) {
     Fimber.d('emitting $cause');
     history.add(cause);
@@ -41,6 +44,7 @@ class CausalityUniverse {
     );
   }
 
+  /// Wait until all pending effects have been triggered and finished running.
   Future<void> idle() async {
     await Future.wait(
       _completers
@@ -49,6 +53,7 @@ class CausalityUniverse {
     );
   }
 
+  /// Adds an [Effect] observing a [Cause] to [observations].
   void observe({
     required List<Type> causeTypes,
     required Effect effect,
@@ -65,17 +70,22 @@ class CausalityUniverse {
   }
 }
 
+/// Extensions on [Cause].
 extension CauseExtension on Cause {
+  /// Emit this cause in [universe].
   void emit({required CausalityUniverse universe}) {
     universe.emit(this);
   }
 }
 
+/// Extensions on [Effect].
 extension EffectExtension on Effect {
+  /// Dispose all observations of this effect in [universe].
   void dispose({required CausalityUniverse universe}) {
     universe.disposeEffect(this);
   }
 
+  /// Observe [types] in [universe].
   void observe(
     List<Type> types, {
     required CausalityUniverse universe,

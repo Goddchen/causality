@@ -1,6 +1,6 @@
 name: flutter_causality
-description: "Flutter extensions for the causality Dart package."
-repository: https://github.com/Goddchen/causality
+description: "Flutter extensions for the causality Dart package. Easily observe causes in your widget tree."
+repository: https://github.com/Goddchen/causality/tree/main/packages/flutter_causality
 version: 0.0.1
 
 environment:

@@ -1,0 +1,11 @@
+on:
+  push:
+    tags: "causality/*"
+
+jobs:
+  deploy:
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_pub_publish.yml@v1
+    with:
+      dart_sdk: "3.3.0"
+      working_directory: "packages/causality"
+      pub_credentials: ${{ secrets.PUB_CREDENTIALS }}

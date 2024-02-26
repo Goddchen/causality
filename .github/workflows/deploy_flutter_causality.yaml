@@ -1,0 +1,11 @@
+on:
+  push:
+    tags: "flutter_causality/*"
+
+jobs:
+  deploy:
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_pub_publish.yml@v1
+    with:
+      flutter_version: "3.19.0"
+      working_directory: "packages/flutter_causality"
+      pub_credentials: ${{ secrets.PUB_CREDENTIALS }}
