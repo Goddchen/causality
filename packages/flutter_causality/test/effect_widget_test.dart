@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:causality/causality.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_causality/src/effect_widget.dart';
