@@ -20,6 +20,42 @@ As simple as `dart pub add causality`.
 
 Or manually add `causality: ^<version>` to your `pubspec.yaml`.
 
+## Examples
+
+### Declaring causes
+
+```dart
+class DataRequestedCause extends Cause {}
+
+class DataAvailableCause extends Cause {
+  DataAvailableCause(this.data);
+
+  final String data;
+}
+```
+
+### Declaring effects
+
+```dart
+final getDataEffect = Effect(
+  (_) async => [
+    // perform your API request here for example
+    DataAvailableCause('data'),
+  ],
+);
+```
+
+### Observing causes
+
+```dart
+printDataEffect.observe(
+  [
+    DataAvailableCause,
+  ],
+  universe: causalityUniverse,
+);
+```
+
 ## Explanation
 
 See some explanatory examples in the diagram below:
