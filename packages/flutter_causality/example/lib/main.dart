@@ -2,27 +2,20 @@ import 'package:causality/causality.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_causality/flutter_causality.dart';
 
-class RequestDataCause extends Cause {}
-
-class DataAvailableCause extends Cause {
-  DataAvailableCause(this.data);
-
-  final String data;
+void main() {
+  _setupObservations();
+  AppStartedCause().emit(universe: causalityUniverse);
 }
 
-void main() {
-  final CausalityUniverse causalityUniverse = CausalityUniverse();
+final causalityUniverse = CausalityUniverse();
 
-  Effect((_) async {
-    await Future<void>.delayed(const Duration(seconds: 5));
-    return [DataAvailableCause('data')];
-  }).observe(
-    [RequestDataCause],
-    universe: causalityUniverse,
-  );
+final getDataEffect = Effect((_) async {
+  await Future<void>.delayed(const Duration(seconds: 5));
+  return [DataAvailableCause('data')];
+});
 
+final runAppEffect = Effect((_) {
   ViewModel(causalityUniverse);
-
   runApp(
     CausalityUniverseWidget(
       causalityUniverse: causalityUniverse,
@@ -45,9 +38,37 @@ void main() {
       ),
     ),
   );
+  return [];
+});
+
+void _setupObservations() {
+  getDataEffect.observe(
+    [
+      RequestDataCause,
+    ],
+    universe: causalityUniverse,
+  );
+  runAppEffect.observe(
+    [
+      AppStartedCause,
+    ],
+    universe: causalityUniverse,
+  );
 }
 
+class AppStartedCause extends Cause {}
+
+class DataAvailableCause extends Cause {
+  final String data;
+
+  DataAvailableCause(this.data);
+}
+
+class RequestDataCause extends Cause {}
+
 class ViewModel {
+  String? data;
+
   ViewModel(CausalityUniverse causalityUniverse) {
     Effect((cause) {
       if (cause case DataAvailableCause _) {
@@ -65,12 +86,10 @@ class ViewModel {
 
     RequestDataCause().emit(universe: causalityUniverse);
   }
-
-  String? data;
 }
 
 class ViewModelUpdatedCause extends Cause {
-  ViewModelUpdatedCause(this.viewModel);
-
   final ViewModel viewModel;
+
+  ViewModelUpdatedCause(this.viewModel);
 }
