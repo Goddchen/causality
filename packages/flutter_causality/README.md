@@ -18,3 +18,30 @@ Flutter.
 As simple as `dart pub add flutter_causality`.
 
 Or manually add `flutter_causality: ^<version>` to your `pubspec.yaml`.
+
+## Examples
+
+```dart
+runApp(
+  CausalityUniverseWidget(
+    causalityUniverse: causalityUniverse,
+    child: MaterialApp(
+      home: Scaffold(
+        body: EffectWidget(
+          builder: (cause) => switch (cause) {
+            ViewModelUpdatedCause _ => Center(
+                child: Text(cause.viewModel.data ?? ''),
+              ),
+            _ => const Center(
+                child: CircularProgressIndicator(),
+              ),
+          },
+          observedCauseTypes: const [
+            ViewModelUpdatedCause,
+          ],
+        ),
+      ),
+    ),
+  ),
+);
+```
