@@ -43,13 +43,13 @@ final runAppEffect = Effect((_) {
 
 void _setupObservations() {
   getDataEffect.observe(
-    [
+    types: [
       RequestDataCause,
     ],
     universe: causalityUniverse,
   );
   runAppEffect.observe(
-    [
+    types: [
       AppStartedCause,
     ],
     universe: causalityUniverse,
@@ -78,7 +78,7 @@ class ViewModel {
         ViewModelUpdatedCause(this),
       ];
     }).observe(
-      [
+      types: [
         DataAvailableCause,
       ],
       universe: causalityUniverse,
