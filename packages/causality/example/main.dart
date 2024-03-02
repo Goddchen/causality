@@ -4,7 +4,7 @@ void main() async {
   final causalityUniverse = CausalityUniverse();
 
   printDataEffect.observe(
-    [
+    types: [
       DataAvailableCause,
     ],
     universe: causalityUniverse,
