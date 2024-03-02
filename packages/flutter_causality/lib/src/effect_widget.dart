@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_causality/flutter_causality.dart';
 
 /// Builder method that takes a [Cause] to build a [Widget].
-typedef EffectBuilder = Widget Function(Cause? cause);
+typedef EffectBuilder = Widget Function(Cause? latestCause);
 
 /// A widget that allows you to observe [Cause]s and rebuilds when such a cause
 /// is emitted.
@@ -12,22 +12,28 @@ typedef EffectBuilder = Widget Function(Cause? cause);
 class EffectWidget extends StatefulWidget {
   /// Create a widget that observes [observedCauseTypes] and uses [builder] to
   /// build a [Widget] when one the causes is emitted.
+  ///
+  /// If [initCauses] is provided, all those causes are emitted when the
+  /// widget's state is initialized.
   const EffectWidget({
     required EffectBuilder builder,
     required List<Type> observedCauseTypes,
+    List<Cause> initCauses = const [],
     super.key,
   })  : _builder = builder,
+        _initCauses = initCauses,
         _observedCauseTypes = observedCauseTypes;
 
   final EffectBuilder _builder;
   final List<Type> _observedCauseTypes;
+  final List<Cause> _initCauses;
 
   @override
   State<EffectWidget> createState() => _EffectWidgetState();
 }
 
 class _EffectWidgetState extends State<EffectWidget> {
-  Cause? _cause;
+  Cause? _latestCause;
 
   @override
   void initState() {
@@ -43,18 +49,21 @@ class _EffectWidgetState extends State<EffectWidget> {
     if (universe != null) {
       Effect((cause) {
         setState(() {
-          _cause = cause;
+          _latestCause = cause;
         });
         return [];
       }).observe(
         widget._observedCauseTypes,
         universe: universe,
       );
+      for (final cause in widget._initCauses) {
+        cause.emit(universe: universe);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget._builder(_cause);
+    return widget._builder(_latestCause);
   }
 }
