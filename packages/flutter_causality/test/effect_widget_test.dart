@@ -52,5 +52,107 @@ void main() {
         isAssertionError,
       );
     });
+
+    testWidgets('disposes internal effect when state is disposed',
+        (widgetTester) async {
+      final causalityUniverse = CausalityUniverse();
+      final testCause = Cause();
+
+      await widgetTester.pumpWidget(
+        CausalityUniverseWidget(
+          causalityUniverse: causalityUniverse,
+          child: EffectWidget(
+            builder: (_) => const Placeholder(),
+            observedCauseTypes: [testCause.runtimeType],
+          ),
+        ),
+      );
+      await causalityUniverse.idle();
+      await widgetTester.pumpAndSettle();
+
+      expect(
+        causalityUniverse.observations[testCause.runtimeType],
+        hasLength(1),
+      );
+
+      await widgetTester.pumpWidget(const Placeholder());
+      await widgetTester.pumpAndSettle();
+
+      expect(
+        causalityUniverse.observations[testCause.runtimeType],
+        isEmpty,
+      );
+    });
+
+    testWidgets('emits dispose causes when state is disposed',
+        (widgetTester) async {
+      final causalityUniverse = CausalityUniverse();
+      final disposeCauses = <Cause>[
+        Cause(),
+        Cause(),
+        Cause(),
+      ];
+      final capturedCauses = <Cause>[];
+
+      Effect((cause) {
+        capturedCauses.add(cause);
+        return [];
+      }).observe(
+        [Cause],
+        universe: causalityUniverse,
+      );
+
+      await widgetTester.pumpWidget(
+        CausalityUniverseWidget(
+          causalityUniverse: causalityUniverse,
+          child: EffectWidget(
+            builder: (_) => const Placeholder(),
+            disposeCauses: disposeCauses,
+            observedCauseTypes: const [],
+          ),
+        ),
+      );
+      await causalityUniverse.idle();
+      await widgetTester.pumpAndSettle();
+
+      await widgetTester.pumpWidget(const Placeholder());
+      await widgetTester.pumpAndSettle();
+
+      expect(capturedCauses, hasLength(disposeCauses.length));
+    });
+
+    testWidgets('emits init causes when state is initialized',
+        (widgetTester) async {
+      final causalityUniverse = CausalityUniverse();
+      final initCauses = <Cause>[
+        Cause(),
+        Cause(),
+        Cause(),
+      ];
+      final capturedCauses = <Cause>[];
+
+      Effect((cause) {
+        capturedCauses.add(cause);
+        return [];
+      }).observe(
+        [Cause],
+        universe: causalityUniverse,
+      );
+
+      await widgetTester.pumpWidget(
+        CausalityUniverseWidget(
+          causalityUniverse: causalityUniverse,
+          child: EffectWidget(
+            builder: (_) => const Placeholder(),
+            initCauses: initCauses,
+            observedCauseTypes: const [],
+          ),
+        ),
+      );
+      await causalityUniverse.idle();
+      await widgetTester.pumpAndSettle();
+
+      expect(capturedCauses, hasLength(initCauses.length));
+    });
   });
 }

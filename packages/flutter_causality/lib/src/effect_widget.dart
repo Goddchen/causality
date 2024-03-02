@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:causality/causality.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_causality/src/universe_widget.dart';
@@ -28,8 +30,8 @@ class EffectWidget extends StatefulWidget {
         _disposeCauses = disposeCauses,
         _initCauses = initCauses,
         _observedCauseTypes = observedCauseTypes;
-
   final EffectBuilder _builder;
+
   final List<Cause> _disposeCauses;
   final List<Cause> _initCauses;
   final List<Type> _observedCauseTypes;
@@ -41,43 +43,49 @@ class EffectWidget extends StatefulWidget {
 class _EffectWidgetState extends State<EffectWidget> {
   _EffectWidgetState() {
     _effect = Effect((cause) {
-      setState(() {
-        _latestCause = cause;
-      });
+      if (mounted) {
+        setState(() {
+          _latestCause = cause;
+        });
+      }
       return [];
     });
   }
 
-  Cause? _latestCause;
+  CausalityUniverse? _causalityUniverse;
   Effect? _effect;
+  Cause? _latestCause;
+
+  @override
+  Widget build(BuildContext context) {
+    return widget._builder(_latestCause);
+  }
 
   @override
   void dispose() {
-    if (universe case final CausalityUniverse universe) {
-      for (final cause in widget._disposeCauses) {
-        cause.emit(universe: universe);
-      }
-      _effect?.dispose(universe: universe);
-    }
     super.dispose();
-  }
-
-  CausalityUniverse? get universe {
-    final universe = context
-        .getInheritedWidgetOfExactType<CausalityUniverseWidget>()
-        ?.causalityUniverse;
-    assert(
-      universe != null,
-      'There has to be a CausalityUniverseWidget somewhere in the tree '
-      'above this widget!',
-    );
-    return universe;
+    if (_causalityUniverse case final CausalityUniverse universe) {
+      scheduleMicrotask(() {
+        for (final cause in widget._disposeCauses) {
+          cause.emit(universe: universe);
+        }
+        _effect?.dispose(universe: universe);
+      });
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    if (universe case final CausalityUniverse universe) {
+    _causalityUniverse = context
+        .getInheritedWidgetOfExactType<CausalityUniverseWidget>()
+        ?.causalityUniverse;
+    assert(
+      _causalityUniverse != null,
+      'There has to be a CausalityUniverseWidget somewhere in the tree '
+      'above this widget!',
+    );
+    if (_causalityUniverse case final CausalityUniverse universe) {
       _effect?.observe(
         widget._observedCauseTypes,
         universe: universe,
@@ -86,10 +94,5 @@ class _EffectWidgetState extends State<EffectWidget> {
         cause.emit(universe: universe);
       }
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return widget._builder(_latestCause);
   }
 }
