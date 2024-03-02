@@ -1,6 +1,6 @@
 import 'package:causality/causality.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_causality/flutter_causality.dart';
+import 'package:flutter_causality/src/universe_widget.dart';
 
 /// Builder method that takes a [Cause] to build a [Widget].
 typedef EffectBuilder = Widget Function(Cause? latestCause);
@@ -79,7 +79,7 @@ class _EffectWidgetState extends State<EffectWidget> {
     super.initState();
     if (universe case final CausalityUniverse universe) {
       _effect?.observe(
-        types: widget._observedCauseTypes,
+        widget._observedCauseTypes,
         universe: universe,
       );
       for (final cause in widget._initCauses) {
