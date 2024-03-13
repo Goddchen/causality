@@ -21,7 +21,7 @@ final runAppEffect = Effect((_) {
       causalityUniverse: causalityUniverse,
       child: MaterialApp(
         home: Scaffold(
-          body: EffectWidget(
+          body: RebuildEffectWidget(
             builder: (cause) => switch (cause) {
               ViewModelUpdatedCause _ => Center(
                   child: Text(cause.viewModel.data ?? ''),
