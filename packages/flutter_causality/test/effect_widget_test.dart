@@ -1,6 +1,6 @@
 import 'package:causality/causality.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_causality/src/effect_widget.dart';
+import 'package:flutter_causality/src/effects/rebuild_effect_widget.dart';
 import 'package:flutter_causality/src/universe_widget.dart';
 import 'package:flutter_test/flutter_test.dart';
 
