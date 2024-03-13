@@ -1,11 +1,11 @@
 import 'package:causality/causality.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_causality/src/effect_widget.dart';
+import 'package:flutter_causality/src/effects/rebuild_effect_widget.dart';
 import 'package:flutter_causality/src/universe_widget.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  group(EffectWidget, () {
+  group(RebuildEffectWidget, () {
     testWidgets('rebuilds when cause is emitted', (widgetTester) async {
       final causalityUniverse = CausalityUniverse();
       final testCause = Cause();
@@ -14,7 +14,7 @@ void main() {
       await widgetTester.pumpWidget(
         CausalityUniverseWidget(
           causalityUniverse: causalityUniverse,
-          child: EffectWidget(
+          child: RebuildEffectWidget(
             builder: (cause) {
               buildCallCauses.add(cause);
               return const Placeholder();
@@ -40,7 +40,7 @@ void main() {
     testWidgets('throws if universe not found in widget tree',
         (widgetTester) async {
       await widgetTester.pumpWidget(
-        EffectWidget(
+        RebuildEffectWidget(
           builder: (cause) {
             return const Placeholder();
           },
@@ -61,7 +61,7 @@ void main() {
       await widgetTester.pumpWidget(
         CausalityUniverseWidget(
           causalityUniverse: causalityUniverse,
-          child: EffectWidget(
+          child: RebuildEffectWidget(
             builder: (_) => const Placeholder(),
             observedCauseTypes: [testCause.runtimeType],
           ),
@@ -105,7 +105,7 @@ void main() {
       await widgetTester.pumpWidget(
         CausalityUniverseWidget(
           causalityUniverse: causalityUniverse,
-          child: EffectWidget(
+          child: RebuildEffectWidget(
             builder: (_) => const Placeholder(),
             disposeCauses: disposeCauses,
             observedCauseTypes: const [],
@@ -142,7 +142,7 @@ void main() {
       await widgetTester.pumpWidget(
         CausalityUniverseWidget(
           causalityUniverse: causalityUniverse,
-          child: EffectWidget(
+          child: RebuildEffectWidget(
             builder: (_) => const Placeholder(),
             initCauses: initCauses,
             observedCauseTypes: const [],

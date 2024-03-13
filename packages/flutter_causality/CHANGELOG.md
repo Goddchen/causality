@@ -5,3 +5,7 @@
 ## 0.0.2
 
 - add `initCauses` and `disposeCauses` to `EffectWidget`
+
+## next
+
+- rename `EffectWidget` to `RebuildEffectWidget`

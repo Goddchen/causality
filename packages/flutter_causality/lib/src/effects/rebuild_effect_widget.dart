@@ -5,13 +5,13 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_causality/src/universe_widget.dart';
 
 /// Builder method that takes a [Cause] to build a [Widget].
-typedef EffectBuilder = Widget Function(Cause? latestCause);
+typedef RebuildEffectBuilder = Widget Function(Cause? latestCause);
 
 /// A widget that allows you to observe [Cause]s and rebuilds when such a cause
 /// is emitted.
 ///
 /// It looks for a [CausalityUniverseWidget] up in the tree.
-class EffectWidget extends StatefulWidget {
+class RebuildEffectWidget extends StatefulWidget {
   /// Create a widget that observes [observedCauseTypes] and uses [builder] to
   /// build a [Widget] when one the causes is emitted.
   ///
@@ -20,8 +20,8 @@ class EffectWidget extends StatefulWidget {
   ///
   /// If [disposeCauses] is provided, all those causes are emitted when the
   /// widget's state is disposed.
-  const EffectWidget({
-    required EffectBuilder builder,
+  const RebuildEffectWidget({
+    required RebuildEffectBuilder builder,
     required List<Type> observedCauseTypes,
     List<Cause> disposeCauses = const [],
     List<Cause> initCauses = const [],
@@ -30,18 +30,18 @@ class EffectWidget extends StatefulWidget {
         _disposeCauses = disposeCauses,
         _initCauses = initCauses,
         _observedCauseTypes = observedCauseTypes;
-  final EffectBuilder _builder;
+  final RebuildEffectBuilder _builder;
 
   final List<Cause> _disposeCauses;
   final List<Cause> _initCauses;
   final List<Type> _observedCauseTypes;
 
   @override
-  State<EffectWidget> createState() => _EffectWidgetState();
+  State<RebuildEffectWidget> createState() => _RebuildEffectWidgetState();
 }
 
-class _EffectWidgetState extends State<EffectWidget> {
-  _EffectWidgetState() {
+class _RebuildEffectWidgetState extends State<RebuildEffectWidget> {
+  _RebuildEffectWidgetState() {
     _effect = Effect((cause) {
       if (mounted) {
         setState(() {
