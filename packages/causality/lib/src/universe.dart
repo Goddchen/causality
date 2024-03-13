@@ -90,8 +90,8 @@ extension EffectExtension on Effect {
   }
 
   /// Observe [types] in [universe].
-  void observe(
-    List<Type> types, {
+  void observe({
+    required List<Type> types,
     required CausalityUniverse universe,
   }) {
     universe.observe(
