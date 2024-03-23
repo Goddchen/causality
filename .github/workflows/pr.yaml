@@ -5,14 +5,14 @@ jobs:
   causality_dart_package:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v1
     with:
-      dart_sdk: "3.3.0"
+      dart_sdk: "3.3.2"
       min_coverage: 0
       runs_on: ubuntu-22.04
       working_directory: packages/causality/
   flutter_causality_dart_package:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
     with:
-      flutter_version: "3.19.0"
+      flutter_version: "3.19.4"
       min_coverage: 0
       runs_on: ubuntu-22.04
       working_directory: packages/flutter_causality/
