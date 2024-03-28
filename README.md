@@ -62,3 +62,7 @@ class Cause4 cause
 class Effect1 effect
 class Effect2 effect
 ```
+
+## Resources
+
+- Medium article by Goddchen: [Bring causality to Dart/Flutter](https://medium.com/@goddchen/bring-causality-to-dart-flutter-a84032c1e78c)
