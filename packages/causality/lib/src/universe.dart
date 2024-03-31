@@ -14,6 +14,24 @@ class CausalityUniverse {
 
   final List<Completer<void>> _completers = [];
 
+  /// Map one cause to a list of other causes.
+  ///
+  /// Useful if you want to cross architecture layers. E.g.
+  /// ButtonClickedCause (UI layer) -> ButtonClickedCause (data layer).
+  void connect<FromCause extends Cause>(
+    EffectMethod builder,
+  ) {
+    Effect(
+      (Cause cause) => switch (cause) {
+        final FromCause _ => builder(cause),
+        _ => [],
+      },
+    ).observe(
+      types: [FromCause],
+      universe: this,
+    );
+  }
+
   /// Disposes an effect and removes all occurences from [observations].
   void disposeEffect(Effect effect) {
     Fimber.d('Disposing $this');
@@ -23,10 +41,6 @@ class CausalityUniverse {
       }
     }
     _cleanupObservations();
-  }
-
-  void _cleanupObservations() {
-    observations.removeWhere((_, value) => value.isEmpty);
   }
 
   /// Emits this cause and triggers all observing effects.
@@ -71,6 +85,10 @@ class CausalityUniverse {
         ifAbsent: () => [effect],
       );
     }
+  }
+
+  void _cleanupObservations() {
+    observations.removeWhere((_, value) => value.isEmpty);
   }
 }
 

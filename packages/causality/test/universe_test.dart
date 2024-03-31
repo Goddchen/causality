@@ -65,5 +65,31 @@ void main() {
         );
       });
     });
+
+    group('connect', () {
+      test('connects two causes', () async {
+        final fromCause = ConnectFromCause();
+        final toCause = ConnectToCause();
+
+        causalityUniverse
+          ..connect<ConnectFromCause>(
+            (_) => [toCause],
+          )
+          ..emit(fromCause);
+        await null;
+
+        expect(
+          causalityUniverse.history,
+          equals([
+            fromCause,
+            toCause,
+          ]),
+        );
+      });
+    });
   });
 }
+
+class ConnectFromCause extends Cause {}
+
+class ConnectToCause extends Cause {}
